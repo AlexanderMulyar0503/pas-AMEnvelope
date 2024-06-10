@@ -173,6 +173,7 @@ object MainForm: TMainForm
     Top = 8
     Width = 75
     Caption = 'Печать'
+    OnClick = ButtonPrintClick
     TabOrder = 1
   end
   object ButtonPrintPreview: TButton
@@ -212,5 +213,8 @@ object MainForm: TMainForm
         Caption = 'О программе'
       end
     end
+  end
+  object MainPrintDialog: TPrintDialog
+    Left = 608
   end
 end

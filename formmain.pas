@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, StdCtrls,
-  PairSplitter, ExtCtrls, ComCtrls, Spin, FileUtil;
+  PairSplitter, ExtCtrls, ComCtrls, Spin, FileUtil, Printers, PrintersDlgs;
 
 type
 
@@ -18,6 +18,7 @@ type
     ListImg: TComboBox;
     ListText: TComboBox;
     ImgPreview: TImage;
+    MainPrintDialog: TPrintDialog;
     TextPreview: TImage;
     LabelImgMarginTop: TLabel;
     LabelImgMarginLeft: TLabel;
@@ -41,6 +42,7 @@ type
     TextMarginTop: TSpinEdit;
     TextMarginLeft: TSpinEdit;
     PanelAllSplitter1: TSplitter;
+    procedure ButtonPrintClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ListImgChange(Sender: TObject);
     procedure ListTextChange(Sender: TObject);
@@ -77,6 +79,37 @@ begin
     ListText.Items.Add(ExtractFileName(ListTextFind[i]));
   end;
   ListTextFind.Free;
+end;
+
+procedure TMainForm.ButtonPrintClick(Sender: TObject);
+var
+  sm: Integer;
+  ImgRect, TextRect: TRect;
+begin
+  if MainPrintDialog.Execute then
+  begin
+    with Printer do
+    try
+      BeginDoc;
+      sm:= Round(PageWidth / 21);
+
+      Canvas.Pen.Color:= clBlack;
+
+      Canvas.Rectangle(3*sm, 2*sm, 18*sm, 2*sm + 3*sm);
+      Canvas.Rectangle(3*sm, 5*sm, 18*sm, 15*sm);
+      Canvas.Rectangle(3*sm, 15*sm, 18*sm, 24*sm);
+
+      Canvas.Rectangle(1*sm, 5*sm, 3*sm, 15*sm);
+      Canvas.Rectangle(18*sm, 5*sm, 20*sm, 15*sm);
+
+      ImgRect:=Rect(4*sm, 7*sm, 8*sm, 7*sm + Round(4*sm/ImgPreview.Picture.Width)*ImgPreview.Picture.Height);
+      Canvas.StretchDraw(ImgRect, ImgPreview.Picture.Bitmap);
+      TextRect:=Rect(10*sm, 7*sm, 17*sm, 7*sm + Round(7*sm/TextPreview.Picture.Width)*TextPreview.Picture.Height);
+      Canvas.StretchDraw(TextRect, TextPreview.Picture.Bitmap);
+    finally
+      EndDoc;
+    end;
+  end;
 end;
 
 procedure TMainForm.ListImgChange(Sender: TObject);
