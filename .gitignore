@@ -1,0 +1,10 @@
+AMEnvelope_gtk
+AMEnvelope_qt
+AMEnvelope.exe
+
+backup/
+lib/
+
+*.lps
+*.res
+*.ini
