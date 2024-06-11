@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, StdCtrls,
-  PairSplitter, ExtCtrls, ComCtrls, Spin, FileUtil, Printers, PrintersDlgs;
+  PairSplitter, ExtCtrls, ComCtrls, Spin, FileUtil, Printers, PrintersDlgs, FormPrintPreview;
 
 type
 
@@ -43,6 +43,7 @@ type
     TextMarginLeft: TSpinEdit;
     PanelAllSplitter1: TSplitter;
     procedure ButtonPrintClick(Sender: TObject);
+    procedure ButtonPrintPreviewClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure ListImgChange(Sender: TObject);
     procedure ListTextChange(Sender: TObject);
@@ -94,6 +95,7 @@ begin
       sm:= Round(PageWidth / 21);
 
       Canvas.Pen.Color:= clBlack;
+      Canvas.Pen.Width:= Round(sm/40);
 
       Canvas.Rectangle(3*sm, 2*sm, 18*sm, 2*sm + 3*sm);
       Canvas.Rectangle(3*sm, 5*sm, 18*sm, 15*sm);
@@ -102,14 +104,22 @@ begin
       Canvas.Rectangle(1*sm, 5*sm, 3*sm, 15*sm);
       Canvas.Rectangle(18*sm, 5*sm, 20*sm, 15*sm);
 
-      ImgRect:=Rect(4*sm, 7*sm, 8*sm, 7*sm + Round(4*sm/ImgPreview.Picture.Width)*ImgPreview.Picture.Height);
+      ImgRect:=Rect(4*sm, 7*sm, 8*sm, 7*sm + Round(4*sm/ImgPreview.Picture.Width*ImgPreview.Picture.Height));
       Canvas.StretchDraw(ImgRect, ImgPreview.Picture.Bitmap);
-      TextRect:=Rect(10*sm, 7*sm, 17*sm, 7*sm + Round(7*sm/TextPreview.Picture.Width)*TextPreview.Picture.Height);
+      TextRect:=Rect(10*sm, 7*sm, 17*sm, 7*sm + Round(7*sm/TextPreview.Picture.Width*TextPreview.Picture.Height));
       Canvas.StretchDraw(TextRect, TextPreview.Picture.Bitmap);
     finally
       EndDoc;
     end;
   end;
+end;
+
+procedure TMainForm.ButtonPrintPreviewClick(Sender: TObject);
+begin
+  ImgPicture:= ImgPreview.Picture;
+  TextPicture:= TextPreview.Picture;
+
+  PrintPreviewForm.ShowModal;
 end;
 
 procedure TMainForm.ListImgChange(Sender: TObject);

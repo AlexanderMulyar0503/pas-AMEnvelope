@@ -182,6 +182,7 @@ object MainForm: TMainForm
     Top = 8
     Width = 216
     Caption = 'Предварительный просмотр'
+    OnClick = ButtonPrintPreviewClick
     TabOrder = 2
   end
   object MainFormMenu: TMainMenu

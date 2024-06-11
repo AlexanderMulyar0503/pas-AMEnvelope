@@ -81,7 +81,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="2">
+    <Units Count="3">
       <Unit0>
         <Filename Value="AMEnvelope.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -90,9 +90,17 @@
         <Filename Value="formmain.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="MainForm"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FormMain"/>
       </Unit1>
+      <Unit2>
+        <Filename Value="formprintpreview.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PrintPreviewForm"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FormPrintPreview"/>
+      </Unit2>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
