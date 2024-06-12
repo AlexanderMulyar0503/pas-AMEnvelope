@@ -109,13 +109,13 @@ begin
 
       if not (ImgPreview.Picture.Width = 0) then
       begin
-        ImgRect:=Rect(4*sm, 7*sm, 8*sm, 7*sm + Round(4*sm/ImgPreview.Picture.Width*ImgPreview.Picture.Height));
+        ImgRect:=Rect((3 + ImgMarginLeft.Value)*sm, (5+ImgMarginTop.Value)*sm, (9-ImgMarginLeft.Value)*sm, (5+ImgMarginTop.Value)*sm + Round(((6-ImgMarginLeft.Value*2)*sm)/ImgPicture.Width*ImgPicture.Height));
         Canvas.StretchDraw(ImgRect, ImgPreview.Picture.Bitmap);
       end;
 
       if not (TextPreview.Picture.Width = 0) then
       begin
-        TextRect:=Rect(10*sm, 7*sm, 17*sm, 7*sm + Round(7*sm/TextPreview.Picture.Width*TextPreview.Picture.Height));
+        TextRect:=Rect((9+TextMarginLeft.Value)*sm, (5+TextMarginTop.Value)*sm, (18-TextMarginLeft.Value)*sm, (5+TextMarginTop.Value)*sm + Round(((9-TextMarginLeft.Value*2)*sm)/TextPicture.Width*TextPicture.Height));
         Canvas.StretchDraw(TextRect, TextPreview.Picture.Bitmap);
       end;
     finally
@@ -128,6 +128,11 @@ procedure TMainForm.ButtonPrintPreviewClick(Sender: TObject);
 begin
   ImgPicture:= ImgPreview.Picture;
   TextPicture:= TextPreview.Picture;
+
+  VleImgMarginTop:= ImgMarginTop.Value;
+  VleImgMarginLeft:= ImgMarginLeft.Value;
+  VleTextMarginTop:= TextMarginTop.Value;
+  VleTextMarginLeft:= TextMarginLeft.Value;
 
   PrintPreviewForm.ShowModal;
 end;

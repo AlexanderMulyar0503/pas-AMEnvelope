@@ -27,6 +27,9 @@ var
   ImgPicture, TextPicture: TPicture;
   ImgPictureRect, TextPictureRect: TRect;
 
+  VleImgMarginTop, VleImgMarginLeft: Integer;
+  VleTextMarginTop, VleTextMarginLeft: Integer;
+
 implementation
 
 {$R *.lfm}
@@ -60,13 +63,13 @@ begin
 
   if not (ImgPicture.Width = 0) then
   begin
-    ImgPictureRect:=Rect(4*sm, 7*sm, 8*sm, 7*sm + Round((4*sm)/ImgPicture.Width*ImgPicture.Height));
+    ImgPictureRect:=Rect((3 + VleImgMarginLeft)*sm, (5+VleImgMarginTop)*sm, (9-VleImgMarginLeft)*sm, (5+VleImgMarginTop)*sm + Round(((6-VleImgMarginLeft*2)*sm)/ImgPicture.Width*ImgPicture.Height));
     PrintPreviewImg.Picture.Bitmap.Canvas.StretchDraw(ImgPictureRect, ImgPicture.Bitmap);
   end;
 
   if not (TextPicture.Width = 0) then
   begin
-    TextPictureRect:=Rect(10*sm, 7*sm, 17*sm, 7*sm + Round((7*sm)/TextPicture.Width*TextPicture.Height));
+    TextPictureRect:=Rect((9+VleTextMarginLeft)*sm, (5+VleTextMarginTop)*sm, (18-VleTextMarginLeft)*sm, (5+VleTextMarginTop)*sm + Round(((9-VleTextMarginLeft*2)*sm)/TextPicture.Width*TextPicture.Height));
     PrintPreviewImg.Picture.Bitmap.Canvas.StretchDraw(TextPictureRect, TextPicture.Bitmap);
   end;
 end;
