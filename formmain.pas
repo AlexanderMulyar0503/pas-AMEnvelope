@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, StdCtrls,
-  PairSplitter, ExtCtrls, ComCtrls, Spin, FileUtil, Printers, PrintersDlgs, FormPrintPreview;
+  PairSplitter, ExtCtrls, ComCtrls, Spin, FileUtil, Printers, ExtDlgs,
+  PrintersDlgs, FormPrintPreview;
 
 type
 
@@ -19,6 +20,7 @@ type
     ListText: TComboBox;
     ImgPreview: TImage;
     MainPrintDialog: TPrintDialog;
+    MainOpenPictureDialog: TOpenPictureDialog;
     TextPreview: TImage;
     LabelImgMarginTop: TLabel;
     LabelImgMarginLeft: TLabel;
@@ -47,6 +49,9 @@ type
     procedure FormCreate(Sender: TObject);
     procedure ListImgChange(Sender: TObject);
     procedure ListTextChange(Sender: TObject);
+    procedure MainFormMenuAddImgClick(Sender: TObject);
+    procedure MainFormMenuAddTextClick(Sender: TObject);
+    procedure MainFormMenuExitClick(Sender: TObject);
   private
 
   public
@@ -64,21 +69,19 @@ implementation
 
 procedure TMainForm.FormCreate(Sender: TObject);
 var
-  i: Integer;
   ListImgFind, ListTextFind: TStringList;
+  FilesList: String;
 begin
-  ListImgFind:= FindAllFiles(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'img' + DirectorySeparator, '*.png', true);
-  for i:= 0 to ListImgFind.Count - 1 do
-  begin
-    ListImg.Items.Add(ExtractFileName(ListImgFind[i]));
-  end;
+  ListImgFind:= FindAllFiles(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'img' + DirectorySeparator, '*', true);
+
+  for FilesList in ListImgFind do ListImg.Items.Add(ExtractFileName(FilesList));
+
   ListImgFind.Free;
 
-  ListTextFind:= FindAllFiles(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'text' + DirectorySeparator, '*.png', true);
-  for i:= 0 to ListTextFind.Count - 1 do
-  begin
-    ListText.Items.Add(ExtractFileName(ListTextFind[i]));
-  end;
+  ListTextFind:= FindAllFiles(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'text' + DirectorySeparator, '*', true);
+
+  for FilesList in ListTextFind do ListText.Items.Add(ExtractFileName(FilesList));
+
   ListTextFind.Free;
 end;
 
@@ -104,10 +107,17 @@ begin
       Canvas.Rectangle(1*sm, 5*sm, 3*sm, 15*sm);
       Canvas.Rectangle(18*sm, 5*sm, 20*sm, 15*sm);
 
-      ImgRect:=Rect(4*sm, 7*sm, 8*sm, 7*sm + Round(4*sm/ImgPreview.Picture.Width*ImgPreview.Picture.Height));
-      Canvas.StretchDraw(ImgRect, ImgPreview.Picture.Bitmap);
-      TextRect:=Rect(10*sm, 7*sm, 17*sm, 7*sm + Round(7*sm/TextPreview.Picture.Width*TextPreview.Picture.Height));
-      Canvas.StretchDraw(TextRect, TextPreview.Picture.Bitmap);
+      if not (ImgPreview.Picture.Width = 0) then
+      begin
+        ImgRect:=Rect(4*sm, 7*sm, 8*sm, 7*sm + Round(4*sm/ImgPreview.Picture.Width*ImgPreview.Picture.Height));
+        Canvas.StretchDraw(ImgRect, ImgPreview.Picture.Bitmap);
+      end;
+
+      if not (TextPreview.Picture.Width = 0) then
+      begin
+        TextRect:=Rect(10*sm, 7*sm, 17*sm, 7*sm + Round(7*sm/TextPreview.Picture.Width*TextPreview.Picture.Height));
+        Canvas.StretchDraw(TextRect, TextPreview.Picture.Bitmap);
+      end;
     finally
       EndDoc;
     end;
@@ -132,6 +142,57 @@ procedure TMainForm.ListTextChange(Sender: TObject);
 begin
   if ListText.ItemIndex = 0 then TextPreview.Picture.Clear
   else TextPreview.Picture.LoadFromFile(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'text' + DirectorySeparator + ListText.Text);
+end;
+
+procedure TMainForm.MainFormMenuAddImgClick(Sender: TObject);
+var
+  ListImgFind: TStringList;
+  FilesList: String;
+begin
+  if MainOpenPictureDialog.Execute then
+  begin
+    ListImg.Items.Clear;
+    ListImg.Items.Add('Нет картинки');
+    ListImg.ItemIndex:= 0;
+
+    for FilesList in MainOpenPictureDialog.Files do CopyFile(FilesList, GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'img' + DirectorySeparator + ExtractFileName(FilesList));
+
+    ListImgFind:= FindAllFiles(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'img' + DirectorySeparator, '*', true);
+
+    for FilesList in ListImgFind do ListImg.Items.Add(ExtractFileName(FilesList));
+
+    ListImgFind.Free;
+
+    ShowMessage('Файлы добавлены');
+  end;
+end;
+
+procedure TMainForm.MainFormMenuAddTextClick(Sender: TObject);
+var
+  ListTextFind: TStringList;
+  FilesList: String;
+begin
+  if MainOpenPictureDialog.Execute then
+  begin
+    ListText.Items.Clear;
+    ListText.Items.Add('Нет текста');
+    ListText.ItemIndex:= 0;
+
+    for FilesList in MainOpenPictureDialog.Files do CopyFile(FilesList, GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'text' + DirectorySeparator + ExtractFileName(FilesList));
+
+    ListTextFind:= FindAllFiles(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'text' + DirectorySeparator, '*', true);
+
+    for FilesList in ListTextFind do ListText.Items.Add(ExtractFileName(FilesList));
+
+    ListTextFind.Free;
+
+    ShowMessage('Файлы добавлены');
+  end;
+end;
+
+procedure TMainForm.MainFormMenuExitClick(Sender: TObject);
+begin
+  Close;
 end;
 
 end.

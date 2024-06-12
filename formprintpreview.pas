@@ -58,10 +58,17 @@ begin
   PrintPreviewImg.Picture.Bitmap.Canvas.Rectangle(1*sm, 5*sm, 3*sm, 15*sm);
   PrintPreviewImg.Picture.Bitmap.Canvas.Rectangle(18*sm, 5*sm, 20*sm, 15*sm);
 
-  ImgPictureRect:=Rect(4*sm, 7*sm, 8*sm, 7*sm + Round((4*sm)/ImgPicture.Width*ImgPicture.Height));
-  PrintPreviewImg.Picture.Bitmap.Canvas.StretchDraw(ImgPictureRect, ImgPicture.Bitmap);
-  TextPictureRect:=Rect(10*sm, 7*sm, 17*sm, 7*sm + Round((7*sm)/TextPicture.Width*TextPicture.Height));
-  PrintPreviewImg.Picture.Bitmap.Canvas.StretchDraw(TextPictureRect, TextPicture.Bitmap);
+  if not (ImgPicture.Width = 0) then
+  begin
+    ImgPictureRect:=Rect(4*sm, 7*sm, 8*sm, 7*sm + Round((4*sm)/ImgPicture.Width*ImgPicture.Height));
+    PrintPreviewImg.Picture.Bitmap.Canvas.StretchDraw(ImgPictureRect, ImgPicture.Bitmap);
+  end;
+
+  if not (TextPicture.Width = 0) then
+  begin
+    TextPictureRect:=Rect(10*sm, 7*sm, 17*sm, 7*sm + Round((7*sm)/TextPicture.Width*TextPicture.Height));
+    PrintPreviewImg.Picture.Bitmap.Canvas.StretchDraw(TextPictureRect, TextPicture.Bitmap);
+  end;
 end;
 
 end.
