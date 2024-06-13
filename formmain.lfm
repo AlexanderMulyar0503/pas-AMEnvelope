@@ -202,6 +202,7 @@ object MainForm: TMainForm
       end
       object MainFormMenuSettings: TMenuItem
         Caption = 'Параметры'
+        OnClick = MainFormMenuSettingsClick
       end
       object MainFormMenuSep2: TMenuItem
         Caption = '-'

@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, StdCtrls,
   PairSplitter, ExtCtrls, ComCtrls, Spin, FileUtil, Printers, ExtDlgs,
-  PrintersDlgs, FormPrintPreview;
+  PrintersDlgs, FormPrintPreview, FormSettings;
 
 type
 
@@ -52,6 +52,7 @@ type
     procedure MainFormMenuAddImgClick(Sender: TObject);
     procedure MainFormMenuAddTextClick(Sender: TObject);
     procedure MainFormMenuExitClick(Sender: TObject);
+    procedure MainFormMenuSettingsClick(Sender: TObject);
   private
 
   public
@@ -198,6 +199,11 @@ end;
 procedure TMainForm.MainFormMenuExitClick(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TMainForm.MainFormMenuSettingsClick(Sender: TObject);
+begin
+  SettingsForm.ShowModal;
 end;
 
 end.
