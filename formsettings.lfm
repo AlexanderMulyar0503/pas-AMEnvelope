@@ -6,6 +6,7 @@ object SettingsForm: TSettingsForm
   Caption = 'Параметры'
   ClientHeight = 350
   ClientWidth = 540
+  OnShow = FormShow
   Position = poMainFormCenter
   LCLVersion = '2.0.10.0'
   object FormPositionGroup: TGroupBox
@@ -97,60 +98,16 @@ object SettingsForm: TSettingsForm
       Value = 400
     end
   end
-  object PanelWidthGroup: TGroupBox
-    Left = 8
-    Height = 129
-    Top = 168
-    Width = 248
-    Caption = 'Ширина панелей'
-    ClientHeight = 109
-    ClientWidth = 246
-    TabOrder = 2
-    object LabelWidthPanelImg: TLabel
-      Left = 15
-      Height = 17
-      Top = 24
-      Width = 115
-      Caption = 'Панель картинки'
-      ParentColor = False
-    end
-    object LabelWidthPanelText: TLabel
-      Left = 15
-      Height = 17
-      Top = 64
-      Width = 93
-      Caption = 'Панель текста'
-      ParentColor = False
-    end
-    object WidthPanelImg: TSpinEdit
-      Left = 168
-      Height = 28
-      Top = 16
-      Width = 66
-      MaxValue = 8000
-      TabOrder = 0
-      Value = 335
-    end
-    object WidthPanelText: TSpinEdit
-      Left = 168
-      Height = 28
-      Top = 64
-      Width = 66
-      MaxValue = 8000
-      TabOrder = 1
-      Value = 335
-    end
-  end
   object PrintSettingsGroup: TGroupBox
-    Left = 280
-    Height = 129
-    Top = 168
-    Width = 250
-    Anchors = [akTop, akRight]
+    Left = 8
+    Height = 140
+    Top = 160
+    Width = 522
+    Anchors = [akTop, akLeft, akRight]
     Caption = 'Настройки печати'
-    ClientHeight = 109
-    ClientWidth = 248
-    TabOrder = 3
+    ClientHeight = 120
+    ClientWidth = 520
+    TabOrder = 2
     object LabelSetDefaultPrinter: TLabel
       Left = 16
       Height = 34
@@ -168,10 +125,11 @@ object SettingsForm: TSettingsForm
       ParentColor = False
     end
     object WidthLine: TFloatSpinEdit
-      Left = 176
+      Left = 272
       Height = 28
       Top = 72
-      Width = 64
+      Width = 240
+      Anchors = [akTop, akRight]
       DecimalPlaces = 1
       Increment = 0.1
       MaxValue = 1
@@ -181,9 +139,10 @@ object SettingsForm: TSettingsForm
     end
     object SetDefaultPrinter: TComboBox
       Left = 112
-      Height = 30
+      Height = 35
       Top = 24
-      Width = 128
+      Width = 400
+      Anchors = [akTop, akLeft, akRight]
       ItemHeight = 0
       Style = csDropDownList
       TabOrder = 1
@@ -196,7 +155,8 @@ object SettingsForm: TSettingsForm
     Width = 248
     Anchors = [akLeft, akBottom]
     Caption = 'По умолчанию'
-    TabOrder = 4
+    OnClick = ButtonDefaultClick
+    TabOrder = 3
   end
   object ButtonCancel: TButton
     Left = 410
@@ -205,7 +165,8 @@ object SettingsForm: TSettingsForm
     Width = 120
     Anchors = [akRight, akBottom]
     Caption = 'Отмена'
-    TabOrder = 5
+    OnClick = ButtonCancelClick
+    TabOrder = 4
   end
   object ButtonOK: TButton
     Left = 280
@@ -214,6 +175,7 @@ object SettingsForm: TSettingsForm
     Width = 120
     Anchors = [akRight, akBottom]
     Caption = 'OK'
-    TabOrder = 6
+    OnClick = ButtonOKClick
+    TabOrder = 5
   end
 end
