@@ -81,7 +81,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="4">
+    <Units Count="5">
       <Unit0>
         <Filename Value="AMEnvelope.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -110,6 +110,13 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FormSettings"/>
       </Unit3>
+      <Unit4>
+        <Filename Value="formabout.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="AboutForm"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FormAbout"/>
+      </Unit4>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -217,6 +217,7 @@ object MainForm: TMainForm
       Caption = 'Справка'
       object MainFormMenuAbout: TMenuItem
         Caption = 'О программе'
+        OnClick = MainFormMenuAboutClick
       end
     end
   end

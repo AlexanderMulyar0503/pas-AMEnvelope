@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, StdCtrls,
   ExtCtrls, ComCtrls, Spin, FileUtil, Printers, ExtDlgs,
-  PrintersDlgs, FormPrintPreview, FormSettings, IniFiles;
+  PrintersDlgs, FormPrintPreview, FormSettings, IniFiles, FormAbout;
 
 type
 
@@ -50,6 +50,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure ListImgChange(Sender: TObject);
     procedure ListTextChange(Sender: TObject);
+    procedure MainFormMenuAboutClick(Sender: TObject);
     procedure MainFormMenuAddImgClick(Sender: TObject);
     procedure MainFormMenuAddTextClick(Sender: TObject);
     procedure MainFormMenuExitClick(Sender: TObject);
@@ -188,6 +189,11 @@ procedure TMainForm.ListTextChange(Sender: TObject);
 begin
   if ListText.ItemIndex = 0 then TextPreview.Picture.Clear
   else TextPreview.Picture.LoadFromFile(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'text' + DirectorySeparator + ListText.Text);
+end;
+
+procedure TMainForm.MainFormMenuAboutClick(Sender: TObject);
+begin
+  AboutForm.ShowModal;
 end;
 
 procedure TMainForm.MainFormMenuAddImgClick(Sender: TObject);

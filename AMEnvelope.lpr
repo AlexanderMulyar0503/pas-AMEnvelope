@@ -7,7 +7,7 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, printer4lazarus, FormMain, FormPrintPreview, FormSettings
+  Forms, printer4lazarus, FormMain, FormPrintPreview, FormSettings, FormAbout
   { you can add units after this };
 
 {$R *.res}
@@ -19,6 +19,7 @@ begin
   Application.CreateForm(TMainForm, MainForm);
   Application.CreateForm(TPrintPreviewForm, PrintPreviewForm);
   Application.CreateForm(TSettingsForm, SettingsForm);
+  Application.CreateForm(TAboutForm, AboutForm);
   Application.Run;
 end.
 
