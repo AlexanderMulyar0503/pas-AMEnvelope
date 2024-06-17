@@ -103,12 +103,14 @@ begin
   IniFile.Free;
 
   ListImgFind:= FindAllFiles(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'img' + DirectorySeparator, '*', true);
+  ListImgFind.Sort;
 
   for FilesList in ListImgFind do ListImg.Items.Add(ExtractFileName(FilesList));
 
   ListImgFind.Free;
 
   ListTextFind:= FindAllFiles(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'text' + DirectorySeparator, '*', true);
+  ListTextFind.Sort;
 
   for FilesList in ListTextFind do ListText.Items.Add(ExtractFileName(FilesList));
 
@@ -210,6 +212,7 @@ begin
     for FilesList in MainOpenPictureDialog.Files do CopyFile(FilesList, GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'img' + DirectorySeparator + ExtractFileName(FilesList));
 
     ListImgFind:= FindAllFiles(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'img' + DirectorySeparator, '*', true);
+    ListImgFind.Sort;
 
     for FilesList in ListImgFind do ListImg.Items.Add(ExtractFileName(FilesList));
 
@@ -233,6 +236,7 @@ begin
     for FilesList in MainOpenPictureDialog.Files do CopyFile(FilesList, GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'text' + DirectorySeparator + ExtractFileName(FilesList));
 
     ListTextFind:= FindAllFiles(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'text' + DirectorySeparator, '*', true);
+    ListTextFind.Sort;
 
     for FilesList in ListTextFind do ListText.Items.Add(ExtractFileName(FilesList));
 
