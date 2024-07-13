@@ -17,19 +17,9 @@ type
     ButtonOK: TButton;
     SetDefaultPrinter: TComboBox;
     WidthLine: TFloatSpinEdit;
-    FormPositionGroup: TGroupBox;
-    FormSizeGroup: TGroupBox;
     PrintSettingsGroup: TGroupBox;
-    LabelPositionX: TLabel;
-    LabelPositionY: TLabel;
-    LabelSizeWidth: TLabel;
-    LabelSizeHeight: TLabel;
     LabelSetDefaultPrinter: TLabel;
     LabelWidthLine: TLabel;
-    PositionX: TSpinEdit;
-    PositionY: TSpinEdit;
-    SizeWidth: TSpinEdit;
-    SizeHeight: TSpinEdit;
     procedure ButtonCancelClick(Sender: TObject);
     procedure ButtonDefaultClick(Sender: TObject);
     procedure ButtonOKClick(Sender: TObject);
@@ -42,9 +32,8 @@ type
 
 var
   SettingsForm: TSettingsForm;
+  IniFile: TIniFile;
 
-  CancelPositionX, CancelPositionY: Integer;
-  CancelSizeWidth, CancelSizeHeight: Integer;
 
 implementation
 
@@ -53,20 +42,51 @@ implementation
 { TSettingsForm }
 
 procedure TSettingsForm.FormShow(Sender: TObject);
-var
-  IniFile: TIniFile;
 begin
   SetDefaultPrinter.Items:= Printer.Printers;
 
-  IniFile:= TIniFile.Create(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'amenvelope.ini');
   SetDefaultPrinter.ItemIndex:= IniFile.ReadInteger('Print', 'DefaultPrinter', 0);
   WidthLine.Value:= IniFile.ReadFloat('Print', 'LineWidth', 0.5);
-  IniFile.Free;
 end;
 
 procedure TSettingsForm.ButtonDefaultClick(Sender: TObject);
-var
-  IniFile: TIniFile;
+begin
+  IniFile.WriteInteger('Position', 'X', 25);
+  IniFile.WriteInteger('Position', 'Y', 25);
+  IniFile.WriteInteger('Size', 'Width', 700);
+  IniFile.WriteInteger('Size', 'Height', 400);
+  IniFile.WriteInteger('Print', 'DefaultPrinter', 0);
+  IniFile.WriteFloat('Print', 'LineWidth', 0.5);
+  SettingsForm.Close;
+end;
+
+procedure TSettingsForm.ButtonCancelClick(Sender: TObject);
+begin
+  SettingsForm.Close;
+end;
+
+procedure TSettingsForm.ButtonOKClick(Sender: TObject);
+begin
+  IniFile.WriteInteger('Print', 'DefaultPrinter', SetDefaultPrinter.ItemIndex);
+  IniFile.WriteFloat('Print', 'LineWidth', WidthLine.Value);
+  SettingsForm.Close;
+end;
+
+
+initialization
+
+if not DirectoryExists(GetUserDir + DirectorySeparator + '.amenvelope') then
+begin
+  CreateDir(GetUserDir + DirectorySeparator + '.amenvelope');
+end;
+
+if not DirectoryExists(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'img') then
+  CreateDir(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'img');
+
+if not DirectoryExists(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'text') then
+  CreateDir(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'text');
+
+if not FileExists(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'amenvelope.ini') then
 begin
   IniFile:= TIniFile.Create(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'amenvelope.ini');
   IniFile.WriteInteger('Position', 'X', 25);
@@ -76,36 +96,15 @@ begin
   IniFile.WriteInteger('Print', 'DefaultPrinter', 0);
   IniFile.WriteFloat('Print', 'LineWidth', 0.5);
   IniFile.Free;
-  Close;
 end;
 
-procedure TSettingsForm.ButtonCancelClick(Sender: TObject);
-var
-  IniFile: TIniFile;
-begin
-  IniFile:= TIniFile.Create(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'amenvelope.ini');
-  IniFile.WriteInteger('Position', 'X', CancelPositionX);
-  IniFile.WriteInteger('Position', 'Y', CancelPositionY);
-  IniFile.WriteInteger('Size', 'Width', CancelSizeWidth);
-  IniFile.WriteInteger('Size', 'Height', CancelSizeHeight);
-  IniFile.Free;
-  Close;
-end;
+IniFile:= TIniFile.Create(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'amenvelope.ini');
 
-procedure TSettingsForm.ButtonOKClick(Sender: TObject);
-var
-  IniFile: TIniFile;
-begin
-  IniFile:= TIniFile.Create(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'amenvelope.ini');
-  IniFile.WriteInteger('Position', 'X', PositionX.Value);
-  IniFile.WriteInteger('Position', 'Y', PositionY.Value);
-  IniFile.WriteInteger('Size', 'Width', SizeWidth.Value);
-  IniFile.WriteInteger('Size', 'Height', SizeHeight.Value);
-  IniFile.WriteInteger('Print', 'DefaultPrinter', SetDefaultPrinter.ItemIndex);
-  IniFile.WriteFloat('Print', 'LineWidth', WidthLine.Value);
-  IniFile.Free;
-  Close;
-end;
+
+finalization
+
+IniFile.Free;
+
 
 end.
 

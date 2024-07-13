@@ -1,113 +1,24 @@
 object SettingsForm: TSettingsForm
   Left = 392
-  Height = 350
+  Height = 200
   Top = 277
   Width = 540
   Caption = 'Параметры'
-  ClientHeight = 350
+  ClientHeight = 200
   ClientWidth = 540
   OnShow = FormShow
   Position = poMainFormCenter
   LCLVersion = '2.0.10.0'
-  object FormPositionGroup: TGroupBox
-    Left = 8
-    Height = 128
-    Top = 16
-    Width = 250
-    Caption = 'Положение формы'
-    ClientHeight = 108
-    ClientWidth = 248
-    TabOrder = 0
-    object LabelPositionX: TLabel
-      Left = 16
-      Height = 17
-      Top = 24
-      Width = 89
-      Caption = 'Положение X'
-      ParentColor = False
-    end
-    object LabelPositionY: TLabel
-      Left = 16
-      Height = 17
-      Top = 64
-      Width = 89
-      Caption = 'Положение Y'
-      ParentColor = False
-    end
-    object PositionX: TSpinEdit
-      Left = 168
-      Height = 28
-      Top = 24
-      Width = 66
-      MaxValue = 8000
-      TabOrder = 0
-      Value = 25
-    end
-    object PositionY: TSpinEdit
-      Left = 168
-      Height = 28
-      Top = 64
-      Width = 66
-      MaxValue = 8000
-      TabOrder = 1
-      Value = 25
-    end
-  end
-  object FormSizeGroup: TGroupBox
-    Left = 280
-    Height = 128
-    Top = 16
-    Width = 250
-    Anchors = [akTop, akRight]
-    Caption = 'Размер формы'
-    ClientHeight = 108
-    ClientWidth = 248
-    TabOrder = 1
-    object LabelSizeWidth: TLabel
-      Left = 16
-      Height = 17
-      Top = 24
-      Width = 56
-      Caption = 'Ширина'
-      ParentColor = False
-    end
-    object LabelSizeHeight: TLabel
-      Left = 16
-      Height = 17
-      Top = 64
-      Width = 46
-      Caption = 'Высота'
-      ParentColor = False
-    end
-    object SizeWidth: TSpinEdit
-      Left = 176
-      Height = 28
-      Top = 24
-      Width = 64
-      MaxValue = 8000
-      TabOrder = 0
-      Value = 700
-    end
-    object SizeHeight: TSpinEdit
-      Left = 176
-      Height = 28
-      Top = 64
-      Width = 66
-      MaxValue = 8000
-      TabOrder = 1
-      Value = 400
-    end
-  end
   object PrintSettingsGroup: TGroupBox
     Left = 8
     Height = 140
-    Top = 160
+    Top = 8
     Width = 522
     Anchors = [akTop, akLeft, akRight]
     Caption = 'Настройки печати'
     ClientHeight = 120
     ClientWidth = 520
-    TabOrder = 2
+    TabOrder = 0
     object LabelSetDefaultPrinter: TLabel
       Left = 16
       Height = 34
@@ -151,31 +62,31 @@ object SettingsForm: TSettingsForm
   object ButtonDefault: TButton
     Left = 8
     Height = 25
-    Top = 312
+    Top = 162
     Width = 248
     Anchors = [akLeft, akBottom]
     Caption = 'По умолчанию'
     OnClick = ButtonDefaultClick
-    TabOrder = 3
+    TabOrder = 1
   end
   object ButtonCancel: TButton
     Left = 410
     Height = 25
-    Top = 312
+    Top = 162
     Width = 120
     Anchors = [akRight, akBottom]
     Caption = 'Отмена'
     OnClick = ButtonCancelClick
-    TabOrder = 4
+    TabOrder = 2
   end
   object ButtonOK: TButton
     Left = 280
     Height = 25
-    Top = 312
+    Top = 162
     Width = 120
     Anchors = [akRight, akBottom]
     Caption = 'OK'
     OnClick = ButtonOKClick
-    TabOrder = 5
+    TabOrder = 3
   end
 end

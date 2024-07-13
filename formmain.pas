@@ -75,32 +75,13 @@ procedure TMainForm.FormCreate(Sender: TObject);
 var
   ListImgFind, ListTextFind: TStringList;
   FilesList: String;
-  IniFile: TIniFile;
 begin
-  if not DirectoryExists(GetUserDir + DirectorySeparator + '.amenvelope') then
-  begin
-    CreateDir(GetUserDir + DirectorySeparator + '.amenvelope');
-    CreateDir(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'img');
-    CreateDir(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'text');
-
-    IniFile:= TIniFile.Create(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'amenvelope.ini');
-    IniFile.WriteInteger('Position', 'X', 25);
-    IniFile.WriteInteger('Position', 'Y', 25);
-    IniFile.WriteInteger('Size', 'Width', 700);
-    IniFile.WriteInteger('Size', 'Height', 400);
-    IniFile.WriteInteger('Print', 'DefaultPrinter', 0);
-    IniFile.WriteFloat('Print', 'LineWidth', 0.5);
-    IniFile.Free;
-  end;
-
-  IniFile:= TIniFile.Create(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'amenvelope.ini');
   MainForm.Left:= IniFile.ReadInteger('Position', 'X', 25);
   MainForm.Top:= IniFile.ReadInteger('Position', 'Y', 25);
   MainForm.Width:= IniFile.ReadInteger('Size', 'Width', 700);
   MainForm.Height:= IniFile.ReadInteger('Size', 'Height', 400);
   Printer.PrinterIndex:= IniFile.ReadInteger('Print', 'DefaultPrinter', 0);
   PrintLineWidth:= IniFile.ReadFloat('Print','LineWidth', 0.5);
-  IniFile.Free;
 
   ListImgFind:= FindAllFiles(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'img' + DirectorySeparator, '*', true);
   ListImgFind.Sort;
@@ -170,15 +151,11 @@ begin
 end;
 
 procedure TMainForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
-var
-  IniFile: TIniFile;
 begin
-  IniFile:= TIniFile.Create(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'amenvelope.ini');
   IniFile.WriteInteger('Position', 'X', MainForm.Left);
   IniFile.WriteInteger('Position', 'Y', MainForm.Top);
   IniFile.WriteInteger('Size', 'Width', MainForm.Width);
   IniFile.WriteInteger('Size', 'Height', MainForm.Height);
-  IniFile.Free;
 end;
 
 procedure TMainForm.ListImgChange(Sender: TObject);
@@ -248,33 +225,24 @@ end;
 
 procedure TMainForm.MainFormMenuExitClick(Sender: TObject);
 begin
-  Close;
+  MainForm.Close;
 end;
 
 procedure TMainForm.MainFormMenuSettingsClick(Sender: TObject);
-var
-  IniFile: TIniFile;
 begin
-  CancelPositionX:= MainForm.Left;
-  CancelPositionY:= MainForm.Top;
-  CancelSizeWidth:= MainForm.Width;
-  CancelSizeHeight:= MainForm.Height;
-
-  SettingsForm.PositionX.Value:= MainForm.Left;
-  SettingsForm.PositionY.Value:= MainForm.Top;
-  SettingsForm.SizeWidth.Value:= MainForm.Width;
-  SettingsForm.SizeHeight.Value:= MainForm.Height;
+  IniFile.WriteInteger('Position', 'X', MainForm.Left);
+  IniFile.WriteInteger('Position', 'Y', MainForm.Top);
+  IniFile.WriteInteger('Size', 'Width', MainForm.Width);
+  IniFile.WriteInteger('Size', 'Height', MainForm.Height);
 
   SettingsForm.ShowModal;
 
-  IniFile:= TIniFile.Create(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'amenvelope.ini');
   MainForm.Left:= IniFile.ReadInteger('Position', 'X', 25);
   MainForm.Top:= IniFile.ReadInteger('Position', 'Y', 25);
   MainForm.Width:= IniFile.ReadInteger('Size', 'Width', 700);
   MainForm.Height:= IniFile.ReadInteger('Size', 'Height', 400);
   Printer.PrinterIndex:= IniFile.ReadInteger('Print', 'DefaultPrinter', 0);
   PrintLineWidth:= IniFile.ReadFloat('Print', 'LineWidth', 0.5);
-  IniFile.Free;
 end;
 
 end.
