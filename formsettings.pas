@@ -54,7 +54,7 @@ begin
   IniFile.WriteInteger('Position', 'X', 25);
   IniFile.WriteInteger('Position', 'Y', 25);
   IniFile.WriteInteger('Size', 'Width', 700);
-  IniFile.WriteInteger('Size', 'Height', 400);
+  IniFile.WriteInteger('Size', 'Height', 445);
   IniFile.WriteInteger('Print', 'DefaultPrinter', 0);
   IniFile.WriteFloat('Print', 'LineWidth', 0.5);
   SettingsForm.Close;
@@ -92,7 +92,7 @@ begin
   IniFile.WriteInteger('Position', 'X', 25);
   IniFile.WriteInteger('Position', 'Y', 25);
   IniFile.WriteInteger('Size', 'Width', 700);
-  IniFile.WriteInteger('Size', 'Height', 440);
+  IniFile.WriteInteger('Size', 'Height', 445);
   IniFile.WriteInteger('Print', 'DefaultPrinter', 0);
   IniFile.WriteFloat('Print', 'LineWidth', 0.5);
   IniFile.Free;

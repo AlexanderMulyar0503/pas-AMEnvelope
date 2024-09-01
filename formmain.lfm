@@ -1,10 +1,10 @@
 object MainForm: TMainForm
-  Left = 383
-  Height = 440
-  Top = 252
+  Left = 382
+  Height = 445
+  Top = 251
   Width = 700
   Caption = 'AMEnvelope'
-  ClientHeight = 411
+  ClientHeight = 416
   ClientWidth = 700
   Menu = MainFormMenu
   OnClose = FormClose
@@ -12,20 +12,20 @@ object MainForm: TMainForm
   LCLVersion = '2.0.10.0'
   object PanelAll: TPanel
     Left = 8
-    Height = 368
+    Height = 373
     Top = 40
     Width = 682
     Anchors = [akTop, akLeft, akRight, akBottom]
-    ClientHeight = 368
+    ClientHeight = 373
     ClientWidth = 682
     TabOrder = 0
     object PanelImg: TPanel
       Left = 1
-      Height = 366
+      Height = 371
       Top = 1
       Width = 335
       Align = alLeft
-      ClientHeight = 366
+      ClientHeight = 371
       ClientWidth = 335
       TabOrder = 0
       object ListImg: TComboBox
@@ -83,7 +83,7 @@ object MainForm: TMainForm
       object ImgPreview: TImage
         Left = 8
         Height = 192
-        Top = 168
+        Top = 173
         Width = 312
         Anchors = [akLeft, akRight, akBottom]
         Center = True
@@ -110,17 +110,17 @@ object MainForm: TMainForm
     end
     object PanelAllSplitter1: TSplitter
       Left = 336
-      Height = 366
+      Height = 371
       Top = 1
       Width = 10
     end
     object PanelText: TPanel
       Left = 346
-      Height = 366
+      Height = 371
       Top = 1
       Width = 335
       Align = alClient
-      ClientHeight = 366
+      ClientHeight = 371
       ClientWidth = 335
       TabOrder = 2
       object ListText: TComboBox
@@ -178,7 +178,7 @@ object MainForm: TMainForm
       object TextPreview: TImage
         Left = 8
         Height = 194
-        Top = 168
+        Top = 173
         Width = 320
         Anchors = [akLeft, akRight, akBottom]
         Center = True
