@@ -16,11 +16,15 @@ type
   TMainForm = class(TForm)
     ButtonPrint: TButton;
     ButtonPrintPreview: TButton;
+    ImgWidth: TSpinEdit;
+    LabelImgWidth: TLabel;
+    LabelTextWidth: TLabel;
     ListImg: TComboBox;
     ListText: TComboBox;
     ImgPreview: TImage;
     MainPrintDialog: TPrintDialog;
     MainOpenPictureDialog: TOpenPictureDialog;
+    TextWidth: TSpinEdit;
     TextPreview: TImage;
     LabelImgMarginTop: TLabel;
     LabelImgMarginLeft: TLabel;
@@ -122,13 +126,13 @@ begin
 
       if not (ImgPreview.Picture.Width = 0) then
       begin
-        ImgRect:=Rect((3 + ImgMarginLeft.Value)*sm, (5+ImgMarginTop.Value)*sm, (9-ImgMarginLeft.Value)*sm, (5+ImgMarginTop.Value)*sm + Round(((6-ImgMarginLeft.Value*2)*sm)/ImgPicture.Width*ImgPicture.Height));
+        ImgRect:=Rect((3 + ImgMarginLeft.Value)*sm, (5+ImgMarginTop.Value)*sm, (3+ImgMarginLeft.Value+ImgWidth.Value)*sm, (5+ImgMarginTop.Value)*sm + Round((ImgWidth.Value*sm)/ImgPicture.Width*ImgPicture.Height));
         Canvas.StretchDraw(ImgRect, ImgPreview.Picture.Bitmap);
       end;
 
       if not (TextPreview.Picture.Width = 0) then
       begin
-        TextRect:=Rect((9+TextMarginLeft.Value)*sm, (5+TextMarginTop.Value)*sm, (18-TextMarginLeft.Value)*sm, (5+TextMarginTop.Value)*sm + Round(((9-TextMarginLeft.Value*2)*sm)/TextPicture.Width*TextPicture.Height));
+        TextRect:=Rect((3+TextMarginLeft.Value)*sm, (5+TextMarginTop.Value)*sm, (3+TextMarginLeft.Value+TextWidth.Value)*sm, (5+TextMarginTop.Value)*sm + Round((TextWidth.Value*sm)/TextPicture.Width*TextPicture.Height));
         Canvas.StretchDraw(TextRect, TextPreview.Picture.Bitmap);
       end;
     finally
@@ -144,8 +148,10 @@ begin
 
   VleImgMarginTop:= ImgMarginTop.Value;
   VleImgMarginLeft:= ImgMarginLeft.Value;
+  VleImgWidth:= ImgWidth.Value;
   VleTextMarginTop:= TextMarginTop.Value;
   VleTextMarginLeft:= TextMarginLeft.Value;
+  VleTextWidth:= TextWidth.Value;
 
   PrintPreviewForm.ShowModal;
 end;
