@@ -1,31 +1,31 @@
 object MainForm: TMainForm
-  Left = 382
-  Height = 445
-  Top = 251
-  Width = 700
+  Left = 343
+  Height = 640
+  Top = 200
+  Width = 800
   Caption = 'AMEnvelope'
-  ClientHeight = 416
-  ClientWidth = 700
+  ClientHeight = 611
+  ClientWidth = 800
   Menu = MainFormMenu
   OnClose = FormClose
   OnCreate = FormCreate
   LCLVersion = '2.0.10.0'
   object PanelAll: TPanel
     Left = 8
-    Height = 373
+    Height = 568
     Top = 40
-    Width = 682
+    Width = 782
     Anchors = [akTop, akLeft, akRight, akBottom]
-    ClientHeight = 373
-    ClientWidth = 682
+    ClientHeight = 568
+    ClientWidth = 782
     TabOrder = 0
     object PanelImg: TPanel
       Left = 1
-      Height = 371
+      Height = 566
       Top = 1
       Width = 335
       Align = alLeft
-      ClientHeight = 371
+      ClientHeight = 566
       ClientWidth = 335
       TabOrder = 0
       object ListImg: TComboBox
@@ -60,32 +60,12 @@ object MainForm: TMainForm
         Caption = 'Отступ слева'
         ParentColor = False
       end
-      object ImgMarginTop: TSpinEdit
-        Left = 192
-        Height = 28
-        Top = 48
-        Width = 128
-        Anchors = [akTop, akRight]
-        MaxValue = 10
-        TabOrder = 1
-        Value = 2
-      end
-      object ImgMarginLeft: TSpinEdit
-        Left = 192
-        Height = 28
-        Top = 86
-        Width = 128
-        Anchors = [akTop, akRight]
-        MaxValue = 15
-        TabOrder = 2
-        Value = 1
-      end
       object ImgPreview: TImage
         Left = 8
-        Height = 192
-        Top = 173
+        Height = 100
+        Top = 168
         Width = 312
-        Anchors = [akLeft, akRight, akBottom]
+        Anchors = [akTop, akLeft, akRight]
         Center = True
         Proportional = True
       end
@@ -97,37 +77,11 @@ object MainForm: TMainForm
         Caption = 'Ширина'
         ParentColor = False
       end
-      object ImgWidth: TSpinEdit
-        Left = 192
-        Height = 28
-        Top = 128
-        Width = 128
-        Anchors = [akTop, akRight]
-        MaxValue = 15
-        TabOrder = 3
-        Value = 4
-      end
-    end
-    object PanelAllSplitter1: TSplitter
-      Left = 336
-      Height = 371
-      Top = 1
-      Width = 10
-    end
-    object PanelText: TPanel
-      Left = 346
-      Height = 371
-      Top = 1
-      Width = 335
-      Align = alClient
-      ClientHeight = 371
-      ClientWidth = 335
-      TabOrder = 2
       object ListText: TComboBox
         Left = 8
         Height = 31
-        Top = 8
-        Width = 320
+        Top = 296
+        Width = 316
         Anchors = [akTop, akLeft, akRight]
         ItemHeight = 0
         ItemIndex = 0
@@ -136,13 +90,13 @@ object MainForm: TMainForm
         )
         OnChange = ListTextChange
         Style = csDropDownList
-        TabOrder = 0
+        TabOrder = 1
         Text = 'Нет текста'
       end
       object LabelTextMarginTop: TLabel
         Left = 8
         Height = 17
-        Top = 59
+        Top = 347
         Width = 90
         Caption = 'Отступ сверху'
         ParentColor = False
@@ -150,62 +104,135 @@ object MainForm: TMainForm
       object LabelTextMarginLeft: TLabel
         Left = 8
         Height = 17
-        Top = 97
+        Top = 387
         Width = 83
         Caption = 'Отступ слева'
         ParentColor = False
       end
-      object TextMarginTop: TSpinEdit
-        Left = 200
-        Height = 28
-        Top = 48
-        Width = 128
-        Anchors = [akTop, akRight]
-        MaxValue = 10
-        TabOrder = 1
-        Value = 2
-      end
-      object TextMarginLeft: TSpinEdit
-        Left = 200
-        Height = 28
-        Top = 86
-        Width = 128
-        Anchors = [akTop, akRight]
-        MaxValue = 15
-        TabOrder = 2
-        Value = 7
-      end
       object TextPreview: TImage
         Left = 8
-        Height = 194
-        Top = 173
-        Width = 320
-        Anchors = [akLeft, akRight, akBottom]
+        Height = 100
+        Top = 456
+        Width = 316
+        Anchors = [akTop, akLeft, akRight]
         Center = True
         Proportional = True
       end
       object LabelTextWidth: TLabel
         Left = 8
         Height = 17
-        Top = 136
+        Top = 427
         Width = 56
         Caption = 'Ширина'
         ParentColor = False
       end
-      object TextWidth: TSpinEdit
-        Left = 200
+      object ImgMarginTop: TFloatSpinEdit
+        Left = 192
         Height = 28
-        Top = 128
+        Top = 48
         Width = 128
         Anchors = [akTop, akRight]
+        DecimalPlaces = 1
+        Increment = 0.1
+        MaxValue = 10
+        OnChange = LeftTopWidthChange
+        TabOrder = 2
+        Value = 2
+      end
+      object ImgMarginLeft: TFloatSpinEdit
+        Left = 192
+        Height = 28
+        Top = 86
+        Width = 128
+        Anchors = [akTop, akRight]
+        DecimalPlaces = 1
+        Increment = 0.1
         MaxValue = 15
+        OnChange = LeftTopWidthChange
         TabOrder = 3
+        Value = 1
+      end
+      object ImgWidth: TFloatSpinEdit
+        Left = 192
+        Height = 28
+        Top = 125
+        Width = 128
+        Anchors = [akTop, akRight]
+        DecimalPlaces = 1
+        Increment = 0.1
+        MaxValue = 15
+        OnChange = LeftTopWidthChange
+        TabOrder = 4
+        Value = 4
+      end
+      object TextMarginTop: TFloatSpinEdit
+        Left = 192
+        Height = 28
+        Top = 336
+        Width = 128
+        Anchors = [akTop, akRight]
+        DecimalPlaces = 1
+        Increment = 0.1
+        MaxValue = 10
+        OnChange = LeftTopWidthChange
+        TabOrder = 5
+        Value = 2
+      end
+      object TextMarginLeft: TFloatSpinEdit
+        Left = 192
+        Height = 28
+        Top = 376
+        Width = 128
+        Anchors = [akTop, akRight]
+        DecimalPlaces = 1
+        Increment = 0.1
+        MaxValue = 15
+        OnChange = LeftTopWidthChange
+        TabOrder = 6
         Value = 7
+      end
+      object TextWidth: TFloatSpinEdit
+        Left = 192
+        Height = 28
+        Top = 416
+        Width = 128
+        Anchors = [akTop, akRight]
+        DecimalPlaces = 1
+        Increment = 0.1
+        MaxValue = 15
+        OnChange = LeftTopWidthChange
+        TabOrder = 7
+        Value = 7
+      end
+    end
+    object PanelAllSplitter1: TSplitter
+      Left = 336
+      Height = 566
+      Top = 1
+      Width = 10
+    end
+    object PanelPrintPreview: TPanel
+      Left = 346
+      Height = 566
+      Top = 1
+      Width = 435
+      Align = alClient
+      ClientHeight = 566
+      ClientWidth = 435
+      TabOrder = 2
+      object PrintPreview: TImage
+        Left = 1
+        Height = 564
+        Top = 1
+        Width = 433
+        Align = alClient
+        Center = True
+        Proportional = True
       end
     end
   end
   object ButtonPrint: TButton
-    Left = 8
+    Left = 200
     Height = 25
     Top = 8
     Width = 75
@@ -213,13 +240,13 @@ object MainForm: TMainForm
     OnClick = ButtonPrintClick
     TabOrder = 1
   end
-  object ButtonPrintPreview: TButton
-    Left = 88
+  object ButtonLeftTopWidth: TButton
+    Left = 16
     Height = 25
     Top = 8
-    Width = 216
-    Caption = 'Предварительный просмотр'
-    OnClick = ButtonPrintPreviewClick
+    Width = 176
+    Caption = 'Отступы по умолчанию'
+    OnClick = ButtonLeftTopWidthClick
     TabOrder = 2
   end
   object MainFormMenu: TMainMenu
