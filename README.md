@@ -10,7 +10,7 @@
 
 ## Сборка
 ```
-lazbuild --build-mode <build_mode> ./AMEnvelope.lpi
+lazbuild --build-mode=<build_mode> ./AMEnvelope.lpi
 ```
 
 Режимы сборки:
