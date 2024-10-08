@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, StdCtrls,
-  ExtCtrls, ComCtrls, Spin, FileUtil, Printers, ExtDlgs,
-  PrintersDlgs, FormSettings, IniFiles, FormAbout;
+  ExtCtrls, ComCtrls, Spin, FileUtil, Printers, PrintersDlgs,
+  FormSettings, IniFiles, FormImageManager, FormAbout;
 
 type
 
@@ -18,13 +18,13 @@ type
     MainFormMenuFile: TMenuItem;
     MainFormMenuAddImg: TMenuItem;
     MainFormMenuAddText: TMenuItem;
+    MainFormMenuImagesManager: TMenuItem;
     MainFormMenuSep1: TMenuItem;
     MainFormMenuSettings: TMenuItem;
     MainFormMenuSep2: TMenuItem;
     MainFormMenuExit: TMenuItem;
     MainFormMenuHelp: TMenuItem;
     MainFormMenuAbout: TMenuItem;
-    MainOpenPictureDialog: TOpenPictureDialog;
     MainPrintDialog: TPrintDialog;
     ButtonLeftTopWidth: TButton;
     ButtonPrint: TButton;
@@ -58,10 +58,12 @@ type
     procedure ListTextChange(Sender: TObject);
     procedure MainFormMenuAddImgClick(Sender: TObject);
     procedure MainFormMenuAddTextClick(Sender: TObject);
+    procedure MainFormMenuImagesManagerClick(Sender: TObject);
     procedure MainFormMenuSettingsClick(Sender: TObject);
     procedure MainFormMenuExitClick(Sender: TObject);
     procedure MainFormMenuAboutClick(Sender: TObject);
     procedure PaintPrintPreview;
+    procedure UpdateLists;
   private
 
   public
@@ -76,60 +78,10 @@ implementation
 
 {$R *.lfm}
 
-procedure TMainForm.PaintPrintPreview;
-var
-  sm: Integer;
-  ImgRect, TextRect: TRect;
-  VleImgMrgTop, VleImgMrgLeft, VleImgWidth: Integer;
-  VleTextMrgTop, VleTextMrgLeft, VleTextWidth: Integer;
-begin
-  PrintPreview.Picture.Clear;
-  PrintPreview.Picture.Bitmap.Width:= 2100;
-  PrintPreview.Picture.Bitmap.Height:= 2970;
-
-  PrintPreview.Picture.Bitmap.Canvas.Brush.Color:= clWhite;
-  PrintPreview.Picture.Bitmap.Canvas.FillRect(0, 0, PrintPreview.Picture.Bitmap.Width, PrintPreview.Picture.Bitmap.Height);
-
-  sm:= Round(PrintPreview.Picture.Bitmap.Width / 21);
-
-  PrintPreview.Picture.Bitmap.Canvas.Pen.Color:= clBlack;
-  PrintPreview.Picture.Bitmap.Canvas.Pen.Width:= Round(PrintLineWidth * (sm/5));
-
-  PrintPreview.Picture.Bitmap.Canvas.Rectangle(3*sm, 2*sm, 18*sm, 2*sm + 3*sm);
-  PrintPreview.Picture.Bitmap.Canvas.Rectangle(3*sm, 5*sm, 18*sm, 15*sm);
-  PrintPreview.Picture.Bitmap.Canvas.Rectangle(3*sm, 15*sm, 18*sm, 24*sm);
-
-  PrintPreview.Picture.Bitmap.Canvas.Rectangle(1*sm, 5*sm, 3*sm, 15*sm);
-  PrintPreview.Picture.Bitmap.Canvas.Rectangle(18*sm, 5*sm, 20*sm, 15*sm);
-
-  VleImgMrgTop:= Round((5 + ImgMarginTop.Value) * sm);
-  VleImgMrgLeft:= Round((3 + ImgMarginLeft.Value) * sm);
-  VleImgWidth:= Round(ImgWidth.Value * sm);
-
-  VleTextMrgTop:= Round((5 + TextMarginTop.Value) * sm);
-  VleTextMrgLeft:= Round((3 + TextMarginLeft.Value) * sm);
-  VleTextWidth:= Round(TextWidth.Value * sm);
-
-  if not (ImgPreview.Picture.Width = 0) then
-  begin
-    ImgRect:=Rect(VleImgMrgLeft, VleImgMrgTop, VleImgMrgLeft + VleImgWidth, VleImgMrgTop + Round(VleImgWidth / ImgPreview.Picture.Width * ImgPreview.Picture.Height));
-    PrintPreview.Picture.Bitmap.Canvas.StretchDraw(ImgRect, ImgPreview.Picture.Bitmap);
-  end;
-
-  if not (TextPreview.Picture.Width = 0) then
-  begin
-    TextRect:=Rect(VleTextMrgLeft, VleTextMrgTop, VleTextMrgLeft + VleTextWidth, VleTextMrgTop + Round(VleTextWidth / TextPreview.Picture.Width * TextPreview.Picture.Height));
-    PrintPreview.Picture.Bitmap.Canvas.StretchDraw(TextRect, TextPreview.Picture.Bitmap);
-  end;
-end;
-
 
 { TMainForm }
 
 procedure TMainForm.FormCreate(Sender: TObject);
-var
-  ListImgFind, ListTextFind: TStringList;
-  FilesList: String;
 begin
   MainForm.Left:= IniFile.ReadInteger('Position', 'X', 25);
   MainForm.Top:= IniFile.ReadInteger('Position', 'Y', 25);
@@ -138,16 +90,7 @@ begin
   Printer.PrinterIndex:= IniFile.ReadInteger('Print', 'DefaultPrinter', 0);
   PrintLineWidth:= IniFile.ReadFloat('Print','LineWidth', 0.5);
 
-  ListImgFind:= FindAllFiles(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'img' + DirectorySeparator, '*', true);
-  ListImgFind.Sort;
-  for FilesList in ListImgFind do ListImg.Items.Add(ExtractFileName(FilesList));
-  ListImgFind.Free;
-
-  ListTextFind:= FindAllFiles(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'text' + DirectorySeparator, '*', true);
-  ListTextFind.Sort;
-  for FilesList in ListTextFind do ListText.Items.Add(ExtractFileName(FilesList));
-  ListTextFind.Free;
-
+  UpdateLists;
   PaintPrintPreview;
 end;
 
@@ -241,47 +184,34 @@ begin
 end;
 
 procedure TMainForm.MainFormMenuAddImgClick(Sender: TObject);
-var
-  ListImgFind: TStringList;
-  FilesList: String;
 begin
-  if MainOpenPictureDialog.Execute then
+  if ImageManagerForm.ManagerOpenPictureDialog.Execute then
   begin
-    ListImg.Items.Clear;
-    ListImg.Items.Add('Нет картинки');
-    ListImg.ItemIndex:= 0;
-
-    for FilesList in MainOpenPictureDialog.Files do CopyFile(FilesList, GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'img' + DirectorySeparator + ExtractFileName(FilesList));
-
-    ListImgFind:= FindAllFiles(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'img' + DirectorySeparator, '*', true);
-    ListImgFind.Sort;
-    for FilesList in ListImgFind do ListImg.Items.Add(ExtractFileName(FilesList));
-    ListImgFind.Free;
-
+    AddFiles(0);
     ShowMessage('Файлы добавлены');
   end;
+
+  UpdateLists;
 end;
 
 procedure TMainForm.MainFormMenuAddTextClick(Sender: TObject);
-var
-  ListTextFind: TStringList;
-  FilesList: String;
 begin
-  if MainOpenPictureDialog.Execute then
+  if ImageManagerForm.ManagerOpenPictureDialog.Execute then
   begin
-    ListText.Items.Clear;
-    ListText.Items.Add('Нет текста');
-    ListText.ItemIndex:= 0;
-
-    for FilesList in MainOpenPictureDialog.Files do CopyFile(FilesList, GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'text' + DirectorySeparator + ExtractFileName(FilesList));
-
-    ListTextFind:= FindAllFiles(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'text' + DirectorySeparator, '*', true);
-    ListTextFind.Sort;
-    for FilesList in ListTextFind do ListText.Items.Add(ExtractFileName(FilesList));
-    ListTextFind.Free;
-
+    AddFiles(1);
     ShowMessage('Файлы добавлены');
   end;
+
+  UpdateLists;
+end;
+
+procedure TMainForm.MainFormMenuImagesManagerClick(Sender: TObject);
+begin
+  ImageManagerForm.ShowModal;
+  UpdateLists;
+  ImgPreview.Picture.Clear;
+  TextPreview.Picture.Clear;
+  PaintPrintPreview;
 end;
 
 procedure TMainForm.MainFormMenuSettingsClick(Sender: TObject);
@@ -309,6 +239,76 @@ end;
 procedure TMainForm.MainFormMenuAboutClick(Sender: TObject);
 begin
   AboutForm.ShowModal;
+end;
+
+procedure TMainForm.PaintPrintPreview;
+var
+  sm: Integer;
+  ImgRect, TextRect: TRect;
+  VleImgMrgTop, VleImgMrgLeft, VleImgWidth: Integer;
+  VleTextMrgTop, VleTextMrgLeft, VleTextWidth: Integer;
+begin
+  PrintPreview.Picture.Clear;
+  PrintPreview.Picture.Bitmap.Width:= 700;
+  PrintPreview.Picture.Bitmap.Height:= 990;
+
+  PrintPreview.Picture.Bitmap.Canvas.Brush.Color:= clWhite;
+  PrintPreview.Picture.Bitmap.Canvas.FillRect(0, 0, PrintPreview.Picture.Bitmap.Width, PrintPreview.Picture.Bitmap.Height);
+
+  sm:= Round(PrintPreview.Picture.Bitmap.Width / 21);
+
+  PrintPreview.Picture.Bitmap.Canvas.Pen.Color:= clBlack;
+  PrintPreview.Picture.Bitmap.Canvas.Pen.Width:= Round(PrintLineWidth * (sm/5));
+
+  PrintPreview.Picture.Bitmap.Canvas.Rectangle(3*sm, 2*sm, 18*sm, 2*sm + 3*sm);
+  PrintPreview.Picture.Bitmap.Canvas.Rectangle(3*sm, 5*sm, 18*sm, 15*sm);
+  PrintPreview.Picture.Bitmap.Canvas.Rectangle(3*sm, 15*sm, 18*sm, 24*sm);
+
+  PrintPreview.Picture.Bitmap.Canvas.Rectangle(1*sm, 5*sm, 3*sm, 15*sm);
+  PrintPreview.Picture.Bitmap.Canvas.Rectangle(18*sm, 5*sm, 20*sm, 15*sm);
+
+  VleImgMrgTop:= Round((5 + ImgMarginTop.Value) * sm);
+  VleImgMrgLeft:= Round((3 + ImgMarginLeft.Value) * sm);
+  VleImgWidth:= Round(ImgWidth.Value * sm);
+
+  VleTextMrgTop:= Round((5 + TextMarginTop.Value) * sm);
+  VleTextMrgLeft:= Round((3 + TextMarginLeft.Value) * sm);
+  VleTextWidth:= Round(TextWidth.Value * sm);
+
+  if not (ImgPreview.Picture.Width = 0) then
+  begin
+    ImgRect:=Rect(VleImgMrgLeft, VleImgMrgTop, VleImgMrgLeft + VleImgWidth, VleImgMrgTop + Round(VleImgWidth / ImgPreview.Picture.Width * ImgPreview.Picture.Height));
+    PrintPreview.Picture.Bitmap.Canvas.StretchDraw(ImgRect, ImgPreview.Picture.Bitmap);
+  end;
+
+  if not (TextPreview.Picture.Width = 0) then
+  begin
+    TextRect:=Rect(VleTextMrgLeft, VleTextMrgTop, VleTextMrgLeft + VleTextWidth, VleTextMrgTop + Round(VleTextWidth / TextPreview.Picture.Width * TextPreview.Picture.Height));
+    PrintPreview.Picture.Bitmap.Canvas.StretchDraw(TextRect, TextPreview.Picture.Bitmap);
+  end;
+end;
+
+procedure TMainForm.UpdateLists;
+var
+  ListImgFind, ListTextFind: TStringList;
+  FilesList: String;
+begin
+  ListImg.Items.Clear;
+  ListImg.Items.Add('Нет картинки');
+  ListImg.ItemIndex:= 0;
+  ListText.Items.Clear;
+  ListText.Items.Add('Нет текста');
+  ListText.ItemIndex:= 0;
+
+  ListImgFind:= FindAllFiles(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'img' + DirectorySeparator, '*', true);
+  ListImgFind.Sort;
+  for FilesList in ListImgFind do ListImg.Items.Add(ExtractFileName(FilesList));
+  ListImgFind.Free;
+
+  ListTextFind:= FindAllFiles(GetUserDir + DirectorySeparator + '.amenvelope' + DirectorySeparator + 'text' + DirectorySeparator, '*', true);
+  ListTextFind.Sort;
+  for FilesList in ListTextFind do ListText.Items.Add(ExtractFileName(FilesList));
+  ListTextFind.Free;
 end;
 
 end.

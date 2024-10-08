@@ -261,6 +261,10 @@ object MainForm: TMainForm
         Caption = 'Добавить файлы текста'
         OnClick = MainFormMenuAddTextClick
       end
+      object MainFormMenuImagesManager: TMenuItem
+        Caption = 'Менеджер изображений'
+        OnClick = MainFormMenuImagesManagerClick
+      end
       object MainFormMenuSep1: TMenuItem
         Caption = '-'
       end
@@ -286,9 +290,5 @@ object MainForm: TMainForm
   end
   object MainPrintDialog: TPrintDialog
     Left = 608
-  end
-  object MainOpenPictureDialog: TOpenPictureDialog
-    Options = [ofAllowMultiSelect, ofEnableSizing, ofViewDetail]
-    Left = 544
   end
 end
