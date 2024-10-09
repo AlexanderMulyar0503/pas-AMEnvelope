@@ -219,7 +219,6 @@ begin
     MaxHeight:= MaxHeight + ImageTextPreview.Picture.Bitmap.Canvas.TextHeight('I');
   end;
 
-  ImageTextPreview.Picture.Clear;
   ImageTextPreview.Picture.Bitmap.Width:= MaxWidth;
   ImageTextPreview.Picture.Bitmap.Height:= MaxHeight;
   ImageTextPreview.Picture.Bitmap.Canvas.FillRect(0, 0, MaxWidth, MaxHeight);
